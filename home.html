@@ -18,7 +18,7 @@
                 <p class="text-xs mt-[0.2rem] text-gray-600">Available Balance</p>
             </div>
         </div>
-        <button class="text-sm flex items-center border border-slate-300 px-1 h-7 my-auto rounded-sm" onclick="logOut()">
+        <button class="text-sm flex items-center border border-slate-300 px-1 h-7 my-auto rounded-sm hover:bg-gray-100 hover:cursor-pointer transition duration-200 ease-in-out" onclick="logOut()">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
               </svg>
@@ -30,10 +30,20 @@
 <hr class=" w-full mt-1 bg-black">
 
     <!-- Welcome section -->
-        <div class="w-11/12 mx-auto mt-3">
+        <div class="w-11/12 mx-auto mt-4">
         <p class="font-bold">&#128293; Welcome to Fast Money!</p>
-        <p class="text-xs text-gray-500 mt-2">Enjoy the fastest financial service with the lowest charge. Fast and concise for you!</p>
+        <p class="text-xs text-gray-500 mt-3">Enjoy the fastest financial service with the lowest charge. Fast and concise for you!</p>
         </div>
+
+    <!-- Grid Section -->
+     <div class="grid grid-cols-3 grid-rows-3 gap-2 w-11/12 mx-auto mt-5">
+        <div class="border flex flex-col justify-center items-center gap-1 p-3 rounded-xl hover:bg-gray-100 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out"><img class="w-5" src="Icons/AddMoney.svg" alt=""><p class="text-xs text-gray-500">Add Money</p></div>
+        <div class="border flex flex-col justify-center items-center gap-1 p-3 rounded-xl hover:bg-gray-100 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out"><img class="w-5" src="Icons/CashOut.svg" alt=""><p class="text-xs text-gray-500">Cash Out</p></div>
+        <div class="border flex flex-col justify-center items-center gap-1 p-3 rounded-xl hover:bg-gray-100 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out"><img class="w-5" src="Icons/MoneyTransfer.svg" alt=""><p class="text-xs text-gray-500">Send Money</p></div>
+        <div class="border flex flex-col justify-center items-center gap-1 p-3 rounded-xl hover:bg-gray-100 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out"><img class="w-5" src="Icons/Bonus.svg" alt=""><p class="text-xs text-gray-500">Cashback</p></div>
+        <div class="border flex flex-col justify-center items-center gap-1 p-3 rounded-xl hover:bg-gray-100 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out"><img class="w-5" src="Icons/PayBill.svg" alt=""><p class="text-xs text-gray-500">Bill Pay</p></div>
+        <div class="border flex flex-col justify-center items-center gap-1 p-3 rounded-xl hover:bg-gray-100 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out"><img class="w-5" src="Icons/Transaction.svg" alt=""><p class="text-xs text-gray-500">Transaction</p></div>
+     </div>
 
     <script src="scripts/home.js"></script>
 </body>
