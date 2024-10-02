@@ -13,15 +13,20 @@
         <img class="w-5/12 md:w-3/12 lg:w-3/12 mx-auto" src="logos/logo.png" alt="">
     </div>
 
-    <div class="ml-2 md:w-6/12  flex flex-col justify-center items-center p-6 rounded-lg lg:rounded-2xl shadow-md shadow-blue-200">
+    <form class="ml-2 md:w-6/12  flex flex-col justify-center items-center p-6 rounded-lg lg:rounded-2xl shadow-md shadow-blue-200" onsubmit="logIn(event)">
+        <!--
+        The onsubmit="logIn(event)" prevent the default form submission so that JavaScript function can handle the login logic & ensures that when "Enter" is pressed, the logIn function is called without needing a separate keydown event. 
+        -event.preventDefault()  (related to this)  prevents the form from submitting and refreshing the page
+        -->
         <div class="flex flex-col mb-2 md:mb-1 md:w-10/12 lg:w-7/12">
             <p class="mb-1 font-semibold md:mb-2 md:text-lg ">Mobile Number</p>
-            <input id="mobile-number-input" class="bg-slate-100 p-1 pl-4 md:pl-6 xl:pl-12 rounded-full placeholder:text-sm md:placeholder:text-sm px-7 md:py-3" type="text" placeholder="Enter your number">
+            <input id="mobile-number-input" class="bg-slate-100 p-1 pl-4 md:pl-6 xl:pl-12 rounded-full placeholder:text-sm md:placeholder:text-sm px-7 md:py-3" type="text" placeholder="Enter your number" required>
         </div>
         <div class="flex flex-col mb-1 md:w-10/12 lg:w-7/12 relative">
             <p class="mb-1 font-semibold md:mb-2 md:text-lg ">Your pin</p>
-            <input id="js-pass" class="bg-slate-100 p-1 pl-4 md:pl-6 xl:pl-12  rounded-full placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm px-7 md:py-3 " type="password" placeholder="Enter 4 Digit pin">
-            <button class="absolute right-3 top-8 md:top-12 cursor-pointer" onclick="passToggle()">
+            <input id="js-pass" class="bg-slate-100 p-1 pl-4 md:pl-6 xl:pl-12  rounded-full placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm px-7 md:py-3 " type="password" placeholder="Enter 4 Digit pin" required>
+            <button class="absolute right-3 top-8 md:top-12 cursor-pointer" onclick="passToggle()" type="button">
+                <!-- By default, a button inside a form acts as a submit button if type is not specified, which causes the form to submit -->
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" id="js-eye" class="size-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -33,7 +38,7 @@
             LogIn
         </button>
         <div id="alert-info"></div>
-    </div>
+    </form>
 
     <script>
 
@@ -57,14 +62,15 @@
         const pinInput = document.getElementById('js-pass');
         const noMatch  = document.getElementById('alert-info');
 
-        function logIn () {
+        function logIn (event) {
+            event.preventDefault();
+            // Event Prevent Default: in logIn(event) to prevent page refresh on form submission.
 
             if (numInput.value === '01704974334' && pinInput.value === 'rockon2907') {
                 window.location.href='home.html'
             } else {
                 noMatch.innerHTML=`<p class="text-red-500 text-sm mt-1">*Mobile Number or Pin is incorrect</p>`
             }
-            
         }
     </script>
 </body>
