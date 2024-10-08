@@ -37,19 +37,24 @@
 
     <!-- Grid Section -->
      <div class="grid grid-cols-3 grid-rows-2 gap-2 w-11/12 mx-auto mt-6">
-        <div class="border flex flex-col justify-center items-center gap-1 p-3 rounded-xl hover:bg-gray-100 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out"><img class="w-5" src="Icons/AddMoney.svg" alt=""><p class="text-xs text-gray-500">Add Money</p></div>
-        <div class="border flex flex-col justify-center items-center gap-1 p-3 rounded-xl hover:bg-gray-100 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out"><img class="w-5" src="Icons/CashOut.svg" alt=""><p class="text-xs text-gray-500">Cash Out</p></div>
-        <div class="border flex flex-col justify-center items-center gap-1 p-3 rounded-xl hover:bg-gray-100 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out"><img class="w-5" src="Icons/MoneyTransfer.svg" alt=""><p class="text-xs text-gray-500">Send Money</p></div>
-        <div class="border flex flex-col justify-center items-center gap-1 p-3 rounded-xl hover:bg-gray-100 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out"><img class="w-5" src="Icons/Bonus.svg" alt=""><p class="text-xs text-gray-500">Cashback</p></div>
-        <div class="border flex flex-col justify-center items-center gap-1 p-3 rounded-xl hover:bg-gray-100 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out"><img class="w-5" src="Icons/PayBill.svg" alt=""><p class="text-xs text-gray-500">Bill Pay</p></div>
-        <div class="border flex flex-col justify-center items-center gap-1 p-3 rounded-xl hover:bg-gray-100 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out"><img class="w-5" src="Icons/Transaction.svg" alt=""><p class="text-xs text-gray-500">Transaction</p></div>
+        <div class="border flex flex-col justify-center items-center gap-1 p-3 rounded-xl hover:bg-gray-100 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out" onclick="moneyOptions('add-money')"><img class="w-5" src="Icons/AddMoney.svg" alt=""><p class="text-xs text-gray-500">Add Money</p></div>
+
+        <div class="border flex flex-col justify-center items-center gap-1 p-3 rounded-xl hover:bg-gray-100 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out" onclick="moneyOptions('cash-out')"><img class="w-5" src="Icons/CashOut.svg" alt=""><p class="text-xs text-gray-500">Cash Out</p></div>
+
+        <div class="border flex flex-col justify-center items-center gap-1 p-3 rounded-xl hover:bg-gray-100 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out" onclick="moneyOptions('send-money')"><img class="w-5" src="Icons/MoneyTransfer.svg" alt=""><p class="text-xs text-gray-500">Send Money</p></div>
+
+        <div class="border flex flex-col justify-center items-center gap-1 p-3 rounded-xl hover:bg-gray-100 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out" onclick="moneyOptions('cashback')"><img class="w-5" src="Icons/Bonus.svg" alt=""><p class="text-xs text-gray-500">Cashback</p></div>
+
+        <div class="border flex flex-col justify-center items-center gap-1 p-3 rounded-xl hover:bg-gray-100 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out" onclick="moneyOptions('pay-bill')"><img class="w-5" src="Icons/PayBill.svg" alt=""><p class="text-xs text-gray-500">Bill Pay</p></div>
+
+        <div class="border flex flex-col justify-center items-center gap-1 p-3 rounded-xl hover:bg-gray-100 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out" onclick="moneyOptions('transaction')"><img class="w-5" src="Icons/Transaction.svg" alt=""><p class="text-xs text-gray-500">Transaction</p></div>
      </div>
 
      
     <div class="bg-slate-100 mt-4 pt-1 rounded-xl">
 
         <!--Payment HIstory section -->
-        <div id="default-home" class="hidden">
+        <div id="default-home" class="">
             <div class="flex justify-between items-center w-11/12 mx-auto mt-4">
                 <p class="font-semibold">Last Payment</p>
                 <p class="text-xs">View All</p>
@@ -298,8 +303,8 @@
             </div> 
         </div>
 
-        <!-- transaction -->
-        <div id="default-home" class="hidden">
+        <!-- Transaction -->
+        <div id="transaction" class="hidden">
             <div class="flex justify-between items-center w-11/12 mx-auto mt-4">
                 <p class="font-semibold">Transaction History</p>
                 <p class="text-xs">View All</p>
