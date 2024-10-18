@@ -14,7 +14,7 @@
                 <img class="w-8" src="logos/logo-min.png" alt="">
             </div>
             <div class="ml-2 text-sm mt-1">
-                <p class="font-bold">$45000</p>
+                <p id="balance" class="font-bold"></p>
                 <p class="text-xs mt-[0.2rem] text-gray-600">Available Balance</p>
             </div>
         </div>
@@ -168,10 +168,10 @@
                 <p class="font-bold">Add Money</p>
             </div>
 
-            <div class="bg-white p-4 mt-2 rounded-xl"> 
+            <form class="bg-white p-4 mt-2 rounded-xl"> 
                 <div class="text-xs font-semibold text-slate-600">
                     <p class="mb-2">Select a Bank</p>
-                    <select class="w-full mb-2 bg-slate-100 rounded-full py-2 px-2" name="" id="">
+                    <select class="w-full mb-2 bg-slate-100 rounded-full py-2 px-2" name="" id="" required>
                         <option value="" disabled selected>Select a bank</option>
                         <option value="">Islami Bank PLC</option>
                         <option value="">Dutch-Bangla PLC</option>
@@ -182,18 +182,18 @@
                     </select>
 
                     <p class="mb-2">Bank Account Number</p>
-                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="number"placeholder="Type bank account number">
+                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="number"placeholder="Type bank account number" required>
 
                     <p class="mb-2">Amount to Add</p>
-                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3 placeholder-text-xs" type="number" placeholder="Add amount">
+                    <input id="firstAddMoneyAmount" class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3 placeholder-text-xs" type="number" placeholder="Add amount" required>
 
                     <p class="mb-2">Pin Number</p>
-                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="password" placeholder="Type your pin">
+                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="password" placeholder="Type your pin" required>
 
-                    <button class="py-2 bg-blue-600 text-white w-full rounded-full mt-2 
+                    <button id="firstAddMoney" class="py-2 bg-blue-600 text-white w-full rounded-full mt-2 
                     transition ease-in-out duration-200 hover:bg-blue-300" onclick="initialFun()">Fast Add Money</button>
                 </div>
-            </div> 
+            </form> 
         </div>
 
         <!-- Cash Out -->
@@ -203,22 +203,22 @@
                 <p class="font-bold">Cash Out</p>
             </div>
 
-            <div class="bg-white p-4 mt-2 rounded-xl"> 
+            <form class="bg-white p-4 mt-2 rounded-xl"> 
                 <div class="text-xs font-semibold text-slate-600">
 
                     <p class="mb-2">Agent Number</p>
-                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="number"placeholder="Enter agent number">
+                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="number"placeholder="Enter agent number" required>
 
                     <p class="mb-2">Amount</p>
-                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3 placeholder-text-xs" type="number" placeholder="Enter amount">
+                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3 placeholder-text-xs" type="number" placeholder="Enter amount" required>
 
                     <p class="mb-2">Pin Number</p>
-                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="password" placeholder="Type your pin">
+                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="password" placeholder="Type your pin" required>
 
                     <button class="py-2 bg-blue-600 text-white w-full rounded-full mt-2 
                     transition ease-in-out duration-200 hover:bg-blue-300">Fast Cash Out</button>
                 </div>
-            </div> 
+            </form> 
         </div>
 
         <!-- Send Money -->
@@ -228,22 +228,22 @@
                 <p class="font-bold">Send Money</p>
             </div>
 
-            <div class="bg-white p-4 mt-2 rounded-xl"> 
+            <form class="bg-white p-4 mt-2 rounded-xl"> 
                 <div class="text-xs font-semibold text-slate-600">
 
                     <p class="mb-2">Receiver's Account Number</p>
-                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="number"placeholder="Enter receiver's account number">
+                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="number"placeholder="Enter receiver's account number" required>
 
                     <p class="mb-2">Amount</p>
-                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3 placeholder-text-xs" type="number" placeholder="Enter amount">
+                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3 placeholder-text-xs" type="number" placeholder="Enter amount" required>
 
                     <p class="mb-2">Pin Number</p>
-                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="password" placeholder="Type your pin">
+                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="password" placeholder="Type your pin" required>
 
                     <button class="py-2 bg-blue-600 text-white w-full rounded-full mt-2 
                     transition ease-in-out duration-200 hover:bg-blue-300">Fast Send</button>
                 </div>
-            </div> 
+            </form> 
         </div>
 
         <!-- Cashback -->
@@ -253,16 +253,16 @@
                 <p class="font-bold">Get Cashback</p>
             </div>
 
-            <div class="bg-white p-4 mt-2 rounded-xl"> 
+            <form class="bg-white p-4 mt-2 rounded-xl"> 
                 <div class="text-xs font-semibold text-slate-600">
 
                     <p class="mb-2">Enter Cashback Coupon</p>
-                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="number"placeholder="Enter coupon code">
+                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="number"placeholder="Enter coupon code" required>
 
                     <button class="py-2 bg-blue-600 text-white w-full rounded-full mt-2 
                     transition ease-in-out duration-200 hover:bg-blue-300">Fast Cashback</button>
                 </div>
-            </div> 
+            </form> 
         </div>
 
         <!-- Pay Bill -->
@@ -272,11 +272,11 @@
                 <p class="font-bold">Pay Bill</p>
             </div>
 
-            <div class="bg-white p-4 mt-2 rounded-xl"> 
+            <form class="bg-white p-4 mt-2 rounded-xl"> 
                 <div class="text-xs font-semibold text-slate-600">
                     <p class="mb-2">Select to Pay</p>
-                    <select class="w-full mb-2 bg-slate-100 rounded-full py-2 px-2" name="" id="">
-                        <option value="" disabled selected>Select institution</option>
+                    <select class="w-full mb-2 bg-slate-100 rounded-full py-2 px-2" name="" id="" required>
+                        <option value="" disabled selected>Select type</option>
                         <option value="">Electricity Bill Payment</option>
                         <option value="">Gas Bill Payment</option>
                         <option value="">University Payment</option>
@@ -286,21 +286,21 @@
                     </select>
 
                     <p class="mb-2">Select Designation</p>
-                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="search"placeholder="Search for desired designation">
+                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="search"placeholder="Search for desired designation" required>
 
                     <p class="mb-2">Biller Account Number</p>
-                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="number"placeholder="Enter biller account number">
+                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="number"placeholder="Enter biller account number" required>
 
                     <p class="mb-2">Amount to pay</p>
-                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3 placeholder-text-xs" type="number" placeholder="Add amount to pay">
+                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3 placeholder-text-xs" type="number" placeholder="Add amount to pay" required>
 
                     <p class="mb-2">Pin Number</p>
-                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="password" placeholder="Type your pin">
+                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="password" placeholder="Type your pin" readonly>
 
                     <button class="py-2 bg-blue-600 text-white w-full rounded-full mt-2 
                     transition ease-in-out duration-200 hover:bg-blue-300">Fast Pay Now</button>
                 </div>
-            </div> 
+            </form> 
         </div>
 
         <!-- Transaction -->

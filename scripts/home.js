@@ -4,6 +4,18 @@ function logOut() {
     window.location.href='index.html'
 }
 
+const mainBalance = parseInt(45000);
+document.getElementById('balance').innerText=`$${mainBalance}`;
+
+// Add Money 
+const moneyAdded = parseInt(document.getElementById('firstAddMoneyAmount').value);
+console.log(moneyAdded)
+function name(params) {
+    document.getElementById('firstAddMoney').addEventListener('click', ()=> {
+       mainBalance += moneyAdded;
+    });
+}
+
 const defaultHome = document.getElementById('default-home');
 //This is also usable
 // const addMoney = document.getElementById('add-money');
@@ -41,14 +53,9 @@ function moneyOptions(selectedOption) {
 }
 
 // Transaction PopUp 
-function initialFun() {
-    const amount = 500;
-    popupFun(amount);
-}
-
 const popUp = document.getElementById('transactionModal');
 
-function popupFun(amount) {
+function popupFun() {
     popUp.classList.remove('hidden');
 
     const TranAmount = document.getElementById('transactionAmount');
