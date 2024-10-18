@@ -4,17 +4,25 @@ function logOut() {
     window.location.href='index.html'
 }
 
-const mainBalance = parseInt(45000);
+let mainBalance = parseInt(45000);
 document.getElementById('balance').innerText=`$${mainBalance}`;
 
 // Add Money 
-const moneyAdded = parseInt(document.getElementById('firstAddMoneyAmount').value);
-console.log(moneyAdded)
-function name(params) {
-    document.getElementById('firstAddMoney').addEventListener('click', ()=> {
-       mainBalance += moneyAdded;
-    });
-}
+document.getElementById('firstAddMoneyBtn').addEventListener('click', (event)=> {
+    event.preventDefault();
+    // Event Prevent Default: in logIn(event) to prevent page refresh on form submission.
+
+    const moneyToAdd = parseInt(document.getElementById('firstAddMoneyAmount').value);
+    if (isNaN(moneyToAdd)) {
+        console.log("Please enter a valid number.");
+    } else {
+        mainBalance += moneyToAdd;
+        document.getElementById('balance').innerText=`$${mainBalance}`;
+    }
+    
+ }); 
+
+ 
 
 const defaultHome = document.getElementById('default-home');
 //This is also usable
