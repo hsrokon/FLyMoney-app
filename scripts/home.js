@@ -19,10 +19,21 @@ document.getElementById('firstAddMoneyBtn').addEventListener('click', (event)=> 
         mainBalance += moneyToAdd;
         document.getElementById('balance').innerText=`$${mainBalance}`;
     }
-    
  }); 
 
- 
+//Cash Out
+document.getElementById('firstCashOutBtn').addEventListener('click', (event)=> {
+    event.preventDefault();
+    // Event Prevent Default: in logIn(event) to prevent page refresh on form submission.
+
+    const moneyToCashOut = parseInt(document.getElementById('firstCashOutAmount').value);
+    if (isNaN(moneyToCashOut)) {
+        console.log("Please enter a valid number.");
+    } else {
+        mainBalance -= moneyToCashOut;
+        document.getElementById('balance').innerText=`$${mainBalance}`;
+    }
+ }); 
 
 const defaultHome = document.getElementById('default-home');
 //This is also usable
