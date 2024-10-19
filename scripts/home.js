@@ -8,18 +8,55 @@ let mainBalance = parseInt(45000);
 document.getElementById('balance').innerText=`$${mainBalance}`;
 
 // Add Money 
-document.getElementById('firstAddMoneyBtn').addEventListener('click', (event)=> {
-    event.preventDefault();
-    // Event Prevent Default: in logIn(event) to prevent page refresh on form submission.
+const addMoneyForm = document.getElementById('add-money-form');
+const addMoneyInput = document.getElementById('firstAddMoneyAmount');
+const addMoneyPass = document.getElementById('passwordField');
+const addMoneyBtn = document.getElementById('firstAddMoneyBtn');
+const addMoneyCon = document.getElementById('conMessage');
+const addAmountCon = document.getElementById('transactionAmount');
+const addYesCon = document.getElementById('yesCon');
+const addNoCon = document.getElementById('noCon');
 
-    const moneyToAdd = parseInt(document.getElementById('firstAddMoneyAmount').value);
-    if (isNaN(moneyToAdd)) {
-        console.log("Please enter a valid number.");
-    } else {
-        mainBalance += moneyToAdd;
-        document.getElementById('balance').innerText=`$${mainBalance}`;
+
+let moneyToAdd;
+
+addMoneyBtn.addEventListener('click', (event) => {
+    // Check if form is valid
+    if (!addMoneyForm.checkValidity()) {
+        // Let the browser handle validation (it will show required input warnings)
+        return;
     }
- }); 
+    event.preventDefault();
+
+    moneyToAdd = parseInt(addMoneyInput.value)
+
+    if (isNaN(moneyToAdd)) {
+        console.log('please enter a valid number')
+    } else if (addMoneyPass.value ==='') {
+        console.log('please enter right password')
+    } else {
+        addAmountCon.innerText=`$${moneyToAdd}`
+        addMoneyCon.classList.remove('hidden')
+    }
+});
+
+addYesCon.addEventListener('click', () => {
+        mainBalance += moneyToAdd;
+        document.getElementById('balance').innerText=`$${mainBalance}`
+        addMoneyCon.classList.add('hidden')
+        addMoneyInput.value=''
+        addMoneyPass.value=''
+        addMoneyBtn.disabled=true
+});
+addNoCon.addEventListener('click', () => {
+        addMoneyCon.classList.add('hidden')
+});
+[addMoneyInput, addMoneyPass].forEach(input => {
+    input.addEventListener('input', () => {
+        addMoneyBtn.disabled = false;
+    });
+});
+
 
 //Cash Out
 document.getElementById('firstCashOutBtn').addEventListener('click', (event)=> {
