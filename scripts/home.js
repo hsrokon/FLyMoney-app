@@ -3,16 +3,17 @@ function logOut() {
     window.location.href='index.html'
 }
 
+let balance = document.getElementById('balance')
 let mainBalance = parseInt(45000);
-document.getElementById('balance').innerText=`$${mainBalance}`;
+balance.innerText=`$${mainBalance}`;
 
 let amount;
 
 // Add Money 
     const addMoneyForm = document.getElementById('add-money-form');
-    const addMoneyInput = document.getElementById('firstAddMoneyAmount');
+    const addMoneyInput = document.getElementById('fastAddMoneyAmount');
     const addMoneyPass = document.getElementById('addPassField');
-    const addMoneyBtn = document.getElementById('firstAddMoneyBtn');
+    const addMoneyBtn = document.getElementById('fastAddMoneyBtn');
 
 addMoneyBtn.addEventListener('click', (event) => {
     // Check if form is valid
@@ -21,10 +22,11 @@ addMoneyBtn.addEventListener('click', (event) => {
         return;
     }
     event.preventDefault();
+    // Event Prevent Default: in logIn(event) to prevent page refresh on form submission.
 
     amount = parseInt(addMoneyInput.value)
     if (isNaN(amount)) {
-        console.log('please enter a valid number')
+        console.log('please enter a valid amount')
     } else if (addMoneyPass.value ==='') {
         console.log('please enter right password')
     } else {
@@ -34,20 +36,19 @@ addMoneyBtn.addEventListener('click', (event) => {
 
 //Cash Out
 const cashOutForm = document.getElementById('cash-out-form')
-const cashOutInput = document.getElementById('firstCashOutAmount')
+const cashOutInput = document.getElementById('fastCashOutAmount')
 const cashOutPass = document.getElementById('cashOutPassField');
-const cashOutBtn = document.getElementById('firstCashOutBtn')
+const cashOutBtn = document.getElementById('fastCashOutBtn')
 
 cashOutBtn.addEventListener('click', (event)=> {
     if (!cashOutForm.checkValidity()) {
         return;
     }
     event.preventDefault();
-    // Event Prevent Default: in logIn(event) to prevent page refresh on form submission.
-
+    
     amount = parseInt(cashOutInput.value);
     if (isNaN(amount)) {
-        console.log("Please enter a valid number.");
+        console.log("Please enter a valid amount.");
     } else if (cashOutPass==='') {
         console.log("Please enter the right password.");
     }
@@ -56,6 +57,27 @@ cashOutBtn.addEventListener('click', (event)=> {
     }
  }); 
 
+ //Send Money
+const sendMoneyForm = document.getElementById('send-money-form')
+const sendMoneyInput = document.getElementById('fastSendMoneyAmount')
+const sendMoneyPass = document.getElementById('sendMoneyPassField')
+const sendMoneyBtn = document.getElementById('fastSendMoneyBtn')
+
+sendMoneyBtn.addEventListener('click', (event)=> {
+    if (!sendMoneyForm.checkValidity()) {
+        return;
+    }
+    event.preventDefault();
+
+    amount =parseInt(sendMoneyInput.value)
+    if (isNaN(amount)) {
+        console.log("Please enter a valid amount.");
+    } else if (sendMoneyPass==='') {
+        console.log("Please enter the right password.");
+    } else {
+        showConfirmation('Send Money', amount, sendMoneyInput, sendMoneyPass)
+    }
+})
 
 //confirmation msg
 const conMessage = document.getElementById('conMessage');
@@ -71,25 +93,29 @@ function showConfirmation(action, amount, inputElement, passElement) {
     transactionAmount.textContent = `$${amount}`;
     conMessage.classList.remove('hidden');
 
+    //before we click 'yes' or 'no' confirmation we're saving data to array for future use 
+    transactionData.action = action;
+    transactionData.amount = amount;
     transactionData.inputElement = inputElement;
     transactionData.passElement = passElement;
-    transactionData.amount = amount;
-    transactionData.action = action;
 }
 
 yesCon.addEventListener('click', yesFun)
+// Use yesFun (without ()) to pass the function itself to be called on click, not immediately
 function yesFun() {
     if (transactionData.action==='Add') {
         mainBalance += transactionData.amount;
     } else if (transactionData.action==='Cash Out') {
         mainBalance -= transactionData.amount;
+    } else if (transactionData.action==='Send Money') {
+        mainBalance -= transactionData.amount;
     }
 
-    document.getElementById('balance').innerText=`$${mainBalance}`;
+    balance.innerText=`$${mainBalance}`;
     transactionData.inputElement.value='';
     transactionData.passElement.value='';
     conMessage.classList.add('hidden');
-    document.getElementById(`${transactionData.action.toLowerCase()}Btn`).disabled=true;
+    document.getElementById(`${transactionData.action.toLowerCase()}Btn`).disabled=true;//this will not work since variables are in camelCase and without space
     
 }
 noCon.addEventListener('click', ()=> {
