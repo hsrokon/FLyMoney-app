@@ -10,10 +10,11 @@ balance.innerText=`$${mainBalance}`;
 let amount;
 
 // Add Money 
-    const addMoneyForm = document.getElementById('add-money-form');
-    const addMoneyInput = document.getElementById('fastAddMoneyAmount');
-    const addMoneyPass = document.getElementById('addPassField');
-    const addMoneyBtn = document.getElementById('fastAddMoneyBtn');
+const addMoneyForm = document.getElementById('add-money-form');
+const addMoneyInput = document.getElementById('fastAddMoneyAmount');
+const addMoneyPass = document.getElementById('addPassField');
+const addMoneyBtn = document.getElementById('fastaddmoneyBtn');
+enableOnInput(addMoneyInput, addMoneyPass, addMoneyBtn);
 
 addMoneyBtn.addEventListener('click', (event) => {
     // Check if form is valid
@@ -30,7 +31,7 @@ addMoneyBtn.addEventListener('click', (event) => {
     } else if (addMoneyPass.value ==='') {
         console.log('please enter right password')
     } else {
-        showConfirmation('Add', amount, addMoneyInput, addMoneyPass)
+        showConfirmation('Add money', amount, addMoneyInput, addMoneyPass);
     }
 });
 
@@ -38,7 +39,8 @@ addMoneyBtn.addEventListener('click', (event) => {
 const cashOutForm = document.getElementById('cash-out-form')
 const cashOutInput = document.getElementById('fastCashOutAmount')
 const cashOutPass = document.getElementById('cashOutPassField');
-const cashOutBtn = document.getElementById('fastCashOutBtn')
+const cashOutBtn = document.getElementById('fastcashoutBtn')
+enableOnInput(cashOutInput, cashOutPass, cashOutBtn);
 
 cashOutBtn.addEventListener('click', (event)=> {
     if (!cashOutForm.checkValidity()) {
@@ -61,7 +63,8 @@ cashOutBtn.addEventListener('click', (event)=> {
 const sendMoneyForm = document.getElementById('send-money-form')
 const sendMoneyInput = document.getElementById('fastSendMoneyAmount')
 const sendMoneyPass = document.getElementById('sendMoneyPassField')
-const sendMoneyBtn = document.getElementById('fastSendMoneyBtn')
+const sendMoneyBtn = document.getElementById('fastsendmoneyBtn')
+enableOnInput(sendMoneyInput, sendMoneyPass, sendMoneyBtn);
 
 sendMoneyBtn.addEventListener('click', (event)=> {
     if (!sendMoneyForm.checkValidity()) {
@@ -103,7 +106,7 @@ function showConfirmation(action, amount, inputElement, passElement) {
 yesCon.addEventListener('click', yesFun)
 // Use yesFun (without ()) to pass the function itself to be called on click, not immediately
 function yesFun() {
-    if (transactionData.action==='Add') {
+    if (transactionData.action==='Add money') {
         mainBalance += transactionData.amount;
     } else if (transactionData.action==='Cash Out') {
         mainBalance -= transactionData.amount;
@@ -115,13 +118,27 @@ function yesFun() {
     transactionData.inputElement.value='';
     transactionData.passElement.value='';
     conMessage.classList.add('hidden');
-    document.getElementById(`${transactionData.action.toLowerCase()}Btn`).disabled=true;//this will not work since variables are in camelCase and without space
-    
+    document.getElementById(`fast${transactionData.action.toLowerCase().replace(/\s+/g,'')}Btn`).disabled=true;//.replace(/\s+/g, '') --- '/' marks start and end of pattern, '\s+' matches one or more spaces, 'g' for global (all) [g flag removes all occurrences], '' replaces with nothing thus removes all spaces 
 }
 noCon.addEventListener('click', ()=> {
     conMessage.classList.add('hidden');
 })
 
+// Re-Enabling button
+function enableOnInput(amountField, passField, button) {
+    function checkField() {
+        if (amountField.value.trim() !=='' && passField.value.trim() !=='') {
+            //trim() removes any whitespace from the beginning and end of a string e.g. if amountField.value is " 100 ", amountField.value.trim() will return "100"
+            //Although we don't need it here bcz we're not taking any whitespace input 
+            button.disabled=false;
+        } else {
+            button.disabled=true;
+        }
+    }
+    amountField.addEventListener('input', checkField);
+    passField.addEventListener('input', checkField);
+    //When user types in or removes text, the input event triggers, and checkFields is called
+}
 
 const defaultHome = document.getElementById('default-home');
 function moneyOptions(selectedOption) {
