@@ -82,6 +82,29 @@ sendMoneyBtn.addEventListener('click', (event)=> {
     }
 })
 
+//Bill Pay
+const payBillForm = document.getElementById('pay-bill-form')
+const payBillInput = document.getElementById('fastPayBillAmount')
+const payBillPass = document.getElementById('payBillPassField')
+const payBillBtn = document.getElementById('fastpaybillBtn')
+enableOnInput(payBillInput, payBillPass, payBillBtn);
+
+payBillBtn.addEventListener('click', (event)=> {
+    if (!payBillForm.checkValidity()) {
+        return;
+    }
+    event.preventDefault();
+
+    amount=parseInt(payBillInput.value)
+    if (isNaN(amount)) {
+        console.log("Please enter a valid amount.")
+    } else if (payBillPass==='') {
+        console.log("Please enter the right password.")
+    } else {
+        showConfirmation('Pay Bill', amount, payBillInput, payBillPass)
+    }
+})
+
 //confirmation msg
 const conMessage = document.getElementById('conMessage');
 const transactionAction = document.getElementById('transactionAction')
@@ -111,6 +134,8 @@ function yesFun() {
     } else if (transactionData.action==='Cash Out') {
         mainBalance -= transactionData.amount;
     } else if (transactionData.action==='Send Money') {
+        mainBalance -= transactionData.amount;
+    } else if (transactionData.action==='Pay Bill') {
         mainBalance -= transactionData.amount;
     }
 
