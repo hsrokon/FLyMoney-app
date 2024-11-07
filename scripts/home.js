@@ -108,7 +108,7 @@ payBillBtn.addEventListener('click', (event)=> {
 //confirmation msg
 const conMessage = document.getElementById('conMessage');
 const transactionAction = document.getElementById('transactionAction')
-const transactionAmount = document.getElementById('transactionAmount');
+const transactionAmount = document.getElementById('transactionConfirmationAmount');
 const yesCon = document.getElementById('yesCon');
 const noCon = document.getElementById('noCon');
 
@@ -137,12 +137,16 @@ function yesFun() {
     } else {
         if (transactionData.action==='Add money') {
         mainBalance += transactionData.amount;
+        popupFun();
         } else if (transactionData.action==='Cash Out') {
         mainBalance -= transactionData.amount;
+        popupFun();
         } else if (transactionData.action==='Send Money') {
         mainBalance -= transactionData.amount;
+        popupFun();
         } else if (transactionData.action==='Pay Bill') {
         mainBalance -= transactionData.amount;
+        popupFun();
         }
     }
 
@@ -152,11 +156,11 @@ function yesFun() {
     conMessage.classList.add('hidden');
     document.getElementById(`fast${transactionData.action.toLowerCase().replace(/\s+/g,'')}Btn`).disabled=true;//.replace(/\s+/g, '') --- '/' marks start and end of pattern, '\s+' matches one or more spaces, 'g' for global (all) [g flag removes all occurrences], '' replaces with nothing thus removes all spaces 
 }
-
+//okInsufficient'
 document.getElementById('okInsufficient').addEventListener('click', ()=> {
         insufficientMsg.classList.add('hidden');
 })
-
+//noCon
 noCon.addEventListener('click', ()=> {
     conMessage.classList.add('hidden');
 })
@@ -200,8 +204,11 @@ const popUp = document.getElementById('transactionModal');
 function popupFun() {
     popUp.classList.remove('hidden');
 
-    const TranAmount = document.getElementById('transactionAmount');
-    TranAmount.innerText=`$${amount}`;
+    const TranName = document.getElementById('transactionName');
+    const TranAmount = document.getElementById('transactionSuccessAmount');
+    TranName.innerText=`${transactionData.action}`;
+    TranAmount.innerText=`$${transactionData.amount}`;
+    
 }
 
 document.getElementById('closeModal').addEventListener('click',()=> {
