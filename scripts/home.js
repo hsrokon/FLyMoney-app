@@ -128,15 +128,22 @@ function showConfirmation(action, amount, inputElement, passElement) {
 
 yesCon.addEventListener('click', yesFun)
 // Use yesFun (without ()) to pass the function itself to be called on click, not immediately
+const insufficientMsg = document.getElementById('insufficientMsg');
 function yesFun() {
-    if (transactionData.action==='Add money') {
+    const requiredBalance = transactionData.amount;
+
+    if ((transactionData.action!=='Add Money') && (mainBalance < requiredBalance)) {
+        insufficientMsg.classList.remove('hidden');
+    } else {
+        if (transactionData.action==='Add money') {
         mainBalance += transactionData.amount;
-    } else if (transactionData.action==='Cash Out') {
+        } else if (transactionData.action==='Cash Out') {
         mainBalance -= transactionData.amount;
-    } else if (transactionData.action==='Send Money') {
+        } else if (transactionData.action==='Send Money') {
         mainBalance -= transactionData.amount;
-    } else if (transactionData.action==='Pay Bill') {
+        } else if (transactionData.action==='Pay Bill') {
         mainBalance -= transactionData.amount;
+        }
     }
 
     balance.innerText=`$${mainBalance}`;
@@ -145,6 +152,11 @@ function yesFun() {
     conMessage.classList.add('hidden');
     document.getElementById(`fast${transactionData.action.toLowerCase().replace(/\s+/g,'')}Btn`).disabled=true;//.replace(/\s+/g, '') --- '/' marks start and end of pattern, '\s+' matches one or more spaces, 'g' for global (all) [g flag removes all occurrences], '' replaces with nothing thus removes all spaces 
 }
+
+document.getElementById('okInsufficient').addEventListener('click', ()=> {
+        insufficientMsg.classList.add('hidden');
+})
+
 noCon.addEventListener('click', ()=> {
     conMessage.classList.add('hidden');
 })
