@@ -3,11 +3,24 @@ function logOut() {
     window.location.href='index.html'
 }
 
+let mainBalance = localStorage.getItem('mainBalance') ? parseInt(localStorage.getItem('mainBalance')) : 45000;
+
 let balance = document.getElementById('balance')
-let mainBalance = parseInt(45000);
 balance.innerText=`$${mainBalance}`;
 
 let amount;
+
+//Update Balance function
+function updateBalance(amount, type) {
+    if (type === 'add') {
+        mainBalance += amount;
+    } else if (type === 'subtract') {
+        mainBalance -= amount;
+    }
+
+    localStorage.setItem('mainBalance', mainBalance);
+    balance.innerText=`$${mainBalance}`;
+}
 
 // Add Money 
 const addMoneyForm = document.getElementById('add-money-form');
@@ -136,16 +149,16 @@ function yesFun() {
         insufficientMsg.classList.remove('hidden');
     } else {
         if (transactionData.action==='Add money') {
-        mainBalance += transactionData.amount;
+        updateBalance(transactionData.amount, 'add');
         popupFun();
         } else if (transactionData.action==='Cash Out') {
-        mainBalance -= transactionData.amount;
+        updateBalance(transactionData.amount, 'subtract');
         popupFun();
         } else if (transactionData.action==='Send Money') {
-        mainBalance -= transactionData.amount;
+        updateBalance(transactionData.amount, 'subtract');
         popupFun();
         } else if (transactionData.action==='Pay Bill') {
-        mainBalance -= transactionData.amount;
+        updateBalance(transactionData.amount, 'subtract');
         popupFun();
         }
     }
