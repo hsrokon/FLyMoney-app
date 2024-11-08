@@ -22,6 +22,25 @@ function updateBalance(amount, type) {
     balance.innerText=`$${mainBalance}`;
 }
 
+//Pin storing and checking
+let storePin  = localStorage.getItem('userPin') || '1234';
+localStorage.setItem('userPin', storePin);
+
+//Change Pin Feature
+// function changePin(newPin) {
+//     localStorage.setItem('userPin', newPin);
+//     alert('Pin changed successfully!');
+// }
+
+// // Usage example:
+// const newPin = prompt('Enter new pin:');
+// changePin(newPin);
+
+function checkPin(inputPin) {
+    const storedPin = localStorage.getItem('userPin');
+    return inputPin === storedPin;
+}
+
 // Add Money 
 const addMoneyForm = document.getElementById('add-money-form');
 const addMoneyInput = document.getElementById('fastAddMoneyAmount');
@@ -38,14 +57,21 @@ addMoneyBtn.addEventListener('click', (event) => {
     event.preventDefault();
     // Event Prevent Default: in logIn(event) to prevent page refresh on form submission.
 
-    amount = parseInt(addMoneyInput.value)
-    if (isNaN(amount)) {
-        console.log('please enter a valid amount')
-    } else if (addMoneyPass.value ==='') {
-        console.log('please enter right password')
+    const enteredPin = addMoneyPass.value;
+    if (!checkPin(enteredPin)) {
+        alert('Incorrect Pin');
     } else {
+            amount = parseInt(addMoneyInput.value)
+        if (isNaN(amount)) {
+        console.log('please enter a valid amount')
+        } else if (addMoneyPass.value ==='') {
+        console.log('please enter right password')
+        } else {
         showConfirmation('Add money', amount, addMoneyInput, addMoneyPass);
+        }
     }
+
+    
 });
 
 //Cash Out
@@ -61,14 +87,18 @@ cashOutBtn.addEventListener('click', (event)=> {
     }
     event.preventDefault();
     
-    amount = parseInt(cashOutInput.value);
-    if (isNaN(amount)) {
+    const enteredPin = cashOutPass.value;
+    if (!checkPin(enteredPin)) {
+        alert('Incorrect Pin');
+    } else {
+        amount = parseInt(cashOutInput.value);
+        if (isNaN(amount)) {
         console.log("Please enter a valid amount.");
-    } else if (cashOutPass==='') {
+        } else if (cashOutPass==='') {
         console.log("Please enter the right password.");
-    }
-     else {
+        } else {
         showConfirmation('Cash Out', amount, cashOutInput, cashOutPass)    
+        }
     }
  }); 
 
@@ -85,14 +115,19 @@ sendMoneyBtn.addEventListener('click', (event)=> {
     }
     event.preventDefault();
 
-    amount =parseInt(sendMoneyInput.value)
-    if (isNaN(amount)) {
-        console.log("Please enter a valid amount.");
-    } else if (sendMoneyPass==='') {
-        console.log("Please enter the right password.");
+    const enteredPin = sendMoneyPass.value;
+    if (!checkPin(enteredPin)) {
+        alert('Incorrect Pin');
     } else {
+            amount =parseInt(sendMoneyInput.value)
+        if (isNaN(amount)) {
+        console.log("Please enter a valid amount.");
+        } else if (sendMoneyPass==='') {
+        console.log("Please enter the right password.");
+        } else {
         showConfirmation('Send Money', amount, sendMoneyInput, sendMoneyPass)
-    }
+        }
+    }  
 })
 
 //Bill Pay
@@ -108,13 +143,18 @@ payBillBtn.addEventListener('click', (event)=> {
     }
     event.preventDefault();
 
-    amount=parseInt(payBillInput.value)
-    if (isNaN(amount)) {
-        console.log("Please enter a valid amount.")
-    } else if (payBillPass==='') {
-        console.log("Please enter the right password.")
+    const enteredPin = payBillPass.value;
+    if (!checkPin(enteredPin)) {
+        alert('Incorrect Pin');
     } else {
+            amount=parseInt(payBillInput.value)
+        if (isNaN(amount)) {
+        console.log("Please enter a valid amount.")
+        } else if (payBillPass==='') {
+        console.log("Please enter the right password.")
+        } else {
         showConfirmation('Pay Bill', amount, payBillInput, payBillPass)
+        }
     }
 })
 
