@@ -1,3 +1,5 @@
+import { bankAccounts } from "./data.js";
+
 //LogOut
 function logOut() {
     window.location.href='index.html'
@@ -5,8 +7,8 @@ function logOut() {
 
 let mainBalance = localStorage.getItem('mainBalance') ? parseInt(localStorage.getItem('mainBalance')) : 45000;
 
-let balance = document.getElementById('balance')
-balance.innerText=`$${mainBalance}`;
+let balance = document.getElementById('balance');
+balance.innerText = `$${mainBalance}`;
 
 let amount;
 
@@ -48,30 +50,45 @@ const addMoneyPass = document.getElementById('addPassField');
 const addMoneyBtn = document.getElementById('fastaddmoneyBtn');
 enableOnInput(addMoneyInput, addMoneyPass, addMoneyBtn);
 
+//Verify Bank and Pin
+function verifyBankAndPin(selectedBank, amount, enteredPin) {
+    const bankData = bankAccounts[selectedBank];
+    
+    if (!bankData) {
+        alert('Selected Bank is not found!');
+        return false;
+    } 
+
+    const enteredAccountNumber = document.getElementById('addBankAccNum').value;
+    if (bankData.accountNumber !== enteredAccountNumber) {
+        alert('Account number does not match!')
+        return false;
+    }
+
+    if (bankData.balance < amount) {
+        alert('Insufficient fund in the selected bank account!');
+        return false;
+    }
+    if (!checkPin(enteredPin)) {
+        alert('Incorrect Pin!')
+        return false;
+    }
+    return true;
+}
+
 addMoneyBtn.addEventListener('click', (event) => {
     // Check if form is valid
-    if (!addMoneyForm.checkValidity()) {
-        // Let the browser handle validation (it will show required input warnings)
-        return;
-    }
+    if (!addMoneyForm.checkValidity()) return;
     event.preventDefault();
     // Event Prevent Default: in logIn(event) to prevent page refresh on form submission.
 
+    const selectedBank = document.getElementById('bankAccountSelect').value;
+    const amount = parseInt(addMoneyInput.value);
     const enteredPin = addMoneyPass.value;
-    if (!checkPin(enteredPin)) {
-        alert('Incorrect Pin');
-    } else {
-            amount = parseInt(addMoneyInput.value)
-        if (isNaN(amount)) {
-        console.log('please enter a valid amount')
-        } else if (addMoneyPass.value ==='') {
-        console.log('please enter right password')
-        } else {
-        showConfirmation('Add money', amount, addMoneyInput, addMoneyPass);
-        }
+     
+    if (verifyBankAndPin(selectedBank, amount, enteredPin)) {
+        showConfirmation('Add money', amount, addMoneyInput, addMoneyPass, selectedBank);
     }
-
-    
 });
 
 //Cash Out
@@ -167,7 +184,7 @@ const noCon = document.getElementById('noCon');
 
 const transactionData ={};
 
-function showConfirmation(action, amount, inputElement, passElement) {
+function showConfirmation(action, amount, inputElement, passElement, selectedBank) {
     transactionAction.textContent=action;
     transactionAmount.textContent = `$${amount}`;
     conMessage.classList.remove('hidden');
@@ -177,28 +194,32 @@ function showConfirmation(action, amount, inputElement, passElement) {
     transactionData.amount = amount;
     transactionData.inputElement = inputElement;
     transactionData.passElement = passElement;
+    transactionData.bank = selectedBank;
 }
 
 yesCon.addEventListener('click', yesFun)
 // Use yesFun (without ()) to pass the function itself to be called on click, not immediately
 const insufficientMsg = document.getElementById('insufficientMsg');
 function yesFun() {
-    const requiredBalance = transactionData.amount;
+    const { action, amount, bank} = transactionData;
+    // const requiredBalance = transactionData.amount;
 
-    if ((transactionData.action!=='Add Money') && (mainBalance < requiredBalance)) {
+    if ((action!=='Add Money') && (mainBalance < amount)) {
         insufficientMsg.classList.remove('hidden');
     } else {
-        if (transactionData.action==='Add money') {
-        updateBalance(transactionData.amount, 'add');
+        if (action==='Add money') {
+        updateBalance(amount, 'add');
+        bankAccounts[bank].balance -= amount;
+        localStorage.setItem('bankAccounts', JSON.stringify(bankAccounts));//Updating & saving Bank balance after transaction
         popupFun();
-        } else if (transactionData.action==='Cash Out') {
-        updateBalance(transactionData.amount, 'subtract');
+        } else if (action==='Cash Out') {
+        updateBalance(amount, 'subtract');
         popupFun();
-        } else if (transactionData.action==='Send Money') {
-        updateBalance(transactionData.amount, 'subtract');
+        } else if (action==='Send Money') {
+        updateBalance(amount, 'subtract');
         popupFun();
-        } else if (transactionData.action==='Pay Bill') {
-        updateBalance(transactionData.amount, 'subtract');
+        } else if (action==='Pay Bill') {
+        updateBalance(amount, 'subtract');
         popupFun();
         }
     }
@@ -250,6 +271,8 @@ function moneyOptions(selectedOption) {
         }
     });
 }
+// Attach moneyOptions to window for global access in HTML onclick attributes | you explicitly add moneyOptions to the window object (the global object in browsers). This makes moneyOptions available throughout the HTML page, including in onclick
+window.moneyOptions=moneyOptions;
 
 // Transaction PopUp 
 const popUp = document.getElementById('transactionModal');
