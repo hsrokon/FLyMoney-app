@@ -41,7 +41,7 @@
 
         <div class="border flex flex-col justify-center items-center gap-1 p-3 rounded-xl hover:bg-gray-100 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out" onclick="moneyOptions('cash-out')"><img class="w-5" src="Icons/CashOut.svg" alt=""><p class="text-xs text-gray-500">Cash Out</p></div>
 
-        <div class="border flex flex-col justify-center items-center gap-1 p-3 rounded-xl hover:bg-gray-100 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out" onclick="moneyOptions('send-money')"><img class="w-5" src="Icons/MoneyTransfer.svg" alt=""><p class="text-xs text-gray-500">Send Money</p></div>
+        <div class="border flex flex-col justify-center items-center gap-1 p-3 rounded-xl hover:bg-gray-100 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out" onclick="moneyOptions('send-money')"><img class="w-5" src="Icons/SendMoney.svg" alt=""><p class="text-xs text-gray-500">Send Money</p></div>
 
         <div class="border flex flex-col justify-center items-center gap-1 p-3 rounded-xl hover:bg-gray-100 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out" onclick="moneyOptions('cashback')"><img class="w-5" src="Icons/Bonus.svg" alt=""><p class="text-xs text-gray-500">Cashback</p></div>
 
@@ -207,7 +207,7 @@
                 <div class="text-xs font-semibold text-slate-600">
 
                     <p class="mb-2">Agent Number</p>
-                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="number"placeholder="Enter agent number" required>
+                    <input id="fastCashOutNumber" class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="number"placeholder="Enter agent number" required>
 
                     <p class="mb-2">Amount</p>
                     <input id="fastCashOutAmount" class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3 placeholder-text-xs" type="number" placeholder="Enter amount" required>
@@ -232,7 +232,7 @@
                 <div class="text-xs font-semibold text-slate-600">
 
                     <p class="mb-2">Receiver's Account Number</p>
-                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="number"placeholder="Enter receiver's account number" required>
+                    <input id="fastSendMoneyNumber" class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="number"placeholder="Enter receiver's account number" required>
 
                     <p class="mb-2">Amount</p>
                     <input id="fastSendMoneyAmount" class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3 placeholder-text-xs" type="number" placeholder="Enter amount" required>
@@ -289,7 +289,7 @@
                     <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="search"placeholder="Search for desired designation" required>
 
                     <p class="mb-2">Biller Account Number</p>
-                    <input class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="number"placeholder="Enter biller account number" required>
+                    <input id="fastPayBillNumber" class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3" type="number"placeholder="Enter biller account number" required>
 
                     <p class="mb-2">Amount to pay</p>
                     <input id="fastPayBillAmount" class="w-full mb-2 bg-slate-100 rounded-full py-2 px-3 placeholder-text-xs" type="number" placeholder="Add amount to pay" required>
@@ -307,111 +307,11 @@
         <div id="transaction" class="hidden">
             <div class="flex justify-between items-center w-11/12 mx-auto mt-4">
                 <p class="font-semibold">Transaction History</p>
-                <p class="text-xs">View All</p>
+                <button id="viewAllTransactions" class="text-xs">View All</button>
             </div>
-
-            <div class="w-11/12 mx-auto mt-3 bg-white rounded-xl px-3 py-2 shadow-sm 
-            hover:bg-gray-50 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out">
-                <div class="flex justify-between items-center">
-                    <div class="flex  items-center">
-                        <div class="bg-slate-100 p-2 rounded-full">
-                        <img class="w-4"  src="Icons/AddMoney.svg" alt=""> 
-                        </div>
-                        
-                        <div class="flex flex-col justify-between text-xs text-left ml-2">
-                            <p>Electricity Bill</p>
-                            <p>Today 08:30 PM</p>
-                        </div>
-                    </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75a4.5 4.5 0 0 1-4.884 4.484c-1.076-.091-2.264.071-2.95.904l-7.152 8.684a2.548 2.548 0 1 1-3.586-3.586l8.684-7.152c.833-.686.995-1.874.904-2.95a4.5 4.5 0 0 1 6.336-4.486l-3.276 3.276a3.004 3.004 0 0 0 2.25 2.25l3.276-3.276c.256.565.398 1.192.398 1.852Z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.867 19.125h.008v.008h-.008v-.008Z" />
-                    </svg> 
-                </div>
-            </div>
-            
-            <div class="w-11/12 mx-auto mt-3 bg-white rounded-xl px-3 py-2 shadow-sm
-            hover:bg-gray-50 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out">
-                <div class="flex justify-between items-center">
-                    <div class="flex  items-center">
-                        <div class="bg-slate-100 p-2 rounded-full">
-                        <img class="w-4"  src="Icons/AddMoney.svg" alt=""> 
-                        </div>
-                        
-                        <div class="flex flex-col justify-between text-xs text-left ml-2">
-                            <p>Bank Deposit</p>
-                            <p>Today 06:50 PM</p>
-                        </div>
-                    </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75a4.5 4.5 0 0 1-4.884 4.484c-1.076-.091-2.264.071-2.95.904l-7.152 8.684a2.548 2.548 0 1 1-3.586-3.586l8.684-7.152c.833-.686.995-1.874.904-2.95a4.5 4.5 0 0 1 6.336-4.486l-3.276 3.276a3.004 3.004 0 0 0 2.25 2.25l3.276-3.276c.256.565.398 1.192.398 1.852Z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.867 19.125h.008v.008h-.008v-.008Z" />
-                    </svg> 
-                </div>
-            </div>
-
-            <div class="w-11/12 mx-auto mt-3 bg-white rounded-xl px-3 py-2 shadow-sm
-            hover:bg-gray-50 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out">
-                <div class="flex justify-between items-center">
-                    <div class="flex  items-center">
-                        <div class="bg-slate-100 p-2 rounded-full">
-                        <img class="w-4"  src="Icons/AddMoney.svg" alt=""> 
-                        </div>
-                        
-                        <div class="flex flex-col justify-between text-xs text-left ml-2">
-                            <p>Mobile Recharge</p>
-                            <p>Today 04:06 PM</p>
-                        </div>
-                    </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75a4.5 4.5 0 0 1-4.884 4.484c-1.076-.091-2.264.071-2.95.904l-7.152 8.684a2.548 2.548 0 1 1-3.586-3.586l8.684-7.152c.833-.686.995-1.874.904-2.95a4.5 4.5 0 0 1 6.336-4.486l-3.276 3.276a3.004 3.004 0 0 0 2.25 2.25l3.276-3.276c.256.565.398 1.192.398 1.852Z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.867 19.125h.008v.008h-.008v-.008Z" />
-                    </svg> 
-                </div>
-            </div>
-
-            <div class="w-11/12 mx-auto mt-3 bg-white rounded-xl px-3 py-2 shadow-sm
-            hover:bg-gray-50 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out">
-                <div class="flex justify-between items-center">
-                    <div class="flex  items-center">
-                        <div class="bg-slate-100 p-2 rounded-full">
-                        <img class="w-4"  src="Icons/AddMoney.svg" alt=""> 
-                        </div>
-                        
-                        <div class="flex flex-col justify-between text-xs text-left ml-2">
-                            <p>Gas Bill</p>
-                            <p>Today 02:53 PM</p>
-                        </div>
-                    </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75a4.5 4.5 0 0 1-4.884 4.484c-1.076-.091-2.264.071-2.95.904l-7.152 8.684a2.548 2.548 0 1 1-3.586-3.586l8.684-7.152c.833-.686.995-1.874.904-2.95a4.5 4.5 0 0 1 6.336-4.486l-3.276 3.276a3.004 3.004 0 0 0 2.25 2.25l3.276-3.276c.256.565.398 1.192.398 1.852Z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.867 19.125h.008v.008h-.008v-.008Z" />
-                    </svg> 
-                </div>
-            </div>
-
-            <div class="w-11/12 mx-auto mt-3 bg-white rounded-xl px-3 py-2 shadow-sm
-            hover:bg-gray-50 hover:border-none hover:cursor-pointer transition duration-200 ease-in-out">
-                <div class="flex justify-between items-center">
-                    <div class="flex  items-center">
-                        <div class="bg-slate-100 p-2 rounded-full">
-                        <img class="w-4"  src="Icons/AddMoney.svg" alt=""> 
-                        </div>
-                        
-                        <div class="flex flex-col justify-between text-xs text-left ml-2">
-                            <p>University Payment</p>
-                            <p>Today 12:44 AM</p>
-                        </div>
-                    </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75a4.5 4.5 0 0 1-4.884 4.484c-1.076-.091-2.264.071-2.95.904l-7.152 8.684a2.548 2.548 0 1 1-3.586-3.586l8.684-7.152c.833-.686.995-1.874.904-2.95a4.5 4.5 0 0 1 6.336-4.486l-3.276 3.276a3.004 3.004 0 0 0 2.25 2.25l3.276-3.276c.256.565.398 1.192.398 1.852Z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.867 19.125h.008v.008h-.008v-.008Z" />
-                    </svg> 
-                </div>
-            </div>
+            <div id="transaction-history"></div>
         </div>
     </div>
-
 
     <!-- Confirmation Message -->
     <div id="conMessage" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
