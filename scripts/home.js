@@ -232,11 +232,21 @@ function yesFun() {
             to : number || 'N/A',
             amount,
             bank: bank || 'N/A',
-            date: new Date().toLocaleString()  // capture date and time
+            date: new Date().toLocaleString()  // creates a new Date object with the current date and time
         });
+        //use of locale is to control how dates, times, and numbers are formatted
+        //const number = 1234567.89; console.log(number.toLocaleString()); Output might be: "1,234,567.89" (in the US locale)
+        //....
+        //const date = new Date();
+        //console.log(date.toLocaleString('en-US')); // US English format
+        //---'en-US': "11/23/2024, 4:35:29 PM"
+        //console.log(date.toLocaleString('de-DE')); // German format
+        //---'de-DE': "23.11.2024, 16:35:29"
         renderTransactionHistory();
         popupFun();
     }
+
+    
 
     balance.innerText=`$${mainBalance}`;
     transactionData.inputElement.value='';
@@ -315,10 +325,24 @@ function renderTransactionHistory() {
     const historyContainer = document.getElementById('transaction-history');
     historyContainer.innerHTML=''; // Clear existing content
 
-    transactionHistory.sort((a,b) => new Date(b.date) - new Date(a.date)); // Sort transactions by date (newest first)
+    transactionHistory.sort((a,b) => new Date(b.date) - new Date(a.date)); 
+    //The .sort() method takes a comparison function as an argument: (a, b)
+    // a and b are two transactions being compared.
+    //new Date(b.date) converts the date string of transaction b into a JavaScript Date object-- [In JavaScript, a Date object can be implicitly converted to a number which has an internal timestamp representing this point in time as a numeric value in milliseconds.]
+    //new Date(b.date) and new Date(a.date) are each converted to their respective timestamps in milliseconds. The subtraction new Date(b.date) - new Date(a.date) gives a positive or negative value:If the result is positive, b is newer than a, so b comes first in the sorted order.If the result is negative, a is newer than b, so a comes first
+    //.....
+    //const date1 = new Date('2024-01-01T12:00:00');
+    //const date2 = new Date('2024-01-02T12:00:00');
+    // Subtracting two Date objects
+    //const difference = date2 - date1; // result in milliseconds
+    //console.log(difference); // Output: 86400000 (milliseconds in 1 day)
+
+
 
     // Determine how many transactions to show
     const transactionsToShow = showAllTransactions ? transactionHistory : transactionHistory.slice(0,3);
+    //When showAllTransactions is true:The ternary operator '?' selects the entire transactionHistory array, so all transactions will be displayed.
+    //When showAllTransactions is false:The ternary operator : selects 'transactionHistory.slice(0, 3)' where .slice(0, 3) creates a new array with only the first three transactions from transactionHistory
 
     transactionsToShow.forEach((transaction) => {
         const historyItem = document.createElement('div');
@@ -352,7 +376,7 @@ function renderTransactionHistory() {
             historyContainer.appendChild(historyItem);
     });
 
-    viewAllButton.textContent = showAllTransactions ? 'Show Less' : 'View All';
+    viewAllButton.textContent = showAllTransactions ? 'Show Less' : 'View All';//We want to show 'Show less' while the page wil show all transactions by changing the buttons text content
 };
 
 // Add event listener to the "View All" button to toggle the view
