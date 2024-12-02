@@ -1,5 +1,3 @@
-import { bankAccounts } from "./data.js";
-
 //LogOut
 function logOut() {
     window.location.href='index.html'
@@ -7,10 +5,23 @@ function logOut() {
 
 let mainBalance = localStorage.getItem('mainBalance') ? parseInt(localStorage.getItem('mainBalance')) : 45000;
 
-let balance = document.getElementById('balance');
-balance.innerText = `$${mainBalance}`;
+let balanceElement = document.getElementById('balance');
+balanceElement.innerText = `$${mainBalance}`;
 
 let amount;
+
+async function fetchBalance() {
+    try {
+        const response = await fetch('http://localhost:5000/api/balance');
+        if(!response.ok) throw new Error("Error fetching balance");
+        const {balance} = await response.json();
+        mainBalance = balance;
+        balanceElement.innerText=`$${mainBalance}`;
+        localStorage.setItem('mainBalance', mainBalance);
+    } catch (error) {
+        console.error(error);
+    }
+}
 
 //Update Balance function
 function updateBalance(amount, type) {
@@ -19,27 +30,11 @@ function updateBalance(amount, type) {
     } else if (type === 'subtract') {
         mainBalance -= amount;
     }
-
-    localStorage.setItem('mainBalance', mainBalance);
     balance.innerText=`$${mainBalance}`;
 }
 
-//Pin storing and checking
-let storePin  = localStorage.getItem('userPin') || '1234';
-localStorage.setItem('userPin', storePin);
-
-//Change Pin Feature
-// function changePin(newPin) {
-//     localStorage.setItem('userPin', newPin);
-//     alert('Pin changed successfully!');
-// }
-
-// // Usage example:
-// const newPin = prompt('Enter new pin:');
-// changePin(newPin);
-
 function checkPin(inputPin) {
-    const storedPin = localStorage.getItem('userPin');
+    const storedPin = localStorage.getItem('userPin') || '1234';
     return inputPin === storedPin;
 }
 
@@ -49,45 +44,15 @@ const addMoneyInput = document.getElementById('fastAddMoneyAmount');
 const addMoneyPass = document.getElementById('addPassField');
 const addMoneyBtn = document.getElementById('fastaddmoneyBtn');
 enableOnInput(addMoneyInput, addMoneyPass, addMoneyBtn);
-
-//Verify Bank and Pin
-function verifyBankAndPin(selectedBank, amount, enteredPin) {
-    const bankData = bankAccounts[selectedBank];
-    
-    if (!bankData) {
-        alert('Selected Bank is not found!');
-        return false;
-    } 
-
-    const enteredAccountNumber = document.getElementById('addBankAccNum').value;
-    if (bankData.accountNumber !== enteredAccountNumber) {
-        alert('Account number does not match!')
-        return false;
-    }
-
-    if (bankData.balance < amount) {
-        alert('Insufficient fund in the selected bank account!');
-        return false;
-    }
-    if (!checkPin(enteredPin)) {
-        alert('Incorrect Pin!')
-        return false;
-    }
-    return true;
-}
-
-addMoneyBtn.addEventListener('click', (event) => {
-    // Check if form is valid
+addMoneyForm.addEventListener('submit', (event)=> {
     if (!addMoneyForm.checkValidity()) return;
     event.preventDefault();
-    // Event Prevent Default: in logIn(event) to prevent page refresh on form submission.
-
-    const selectedBank = document.getElementById('bankAccountSelect').value;
     const amount = parseInt(addMoneyInput.value);
-    const enteredPin = addMoneyPass.value;
-     
-    if (verifyBankAndPin(selectedBank, amount, enteredPin)) {
-        showConfirmation('Add Money', null, amount, addMoneyInput, addMoneyPass, selectedBank);
+    const pin = addMoneyPass.value;
+    if (checkPin(pin)) {
+        showConfirmation('Add Money', null, amount, addMoneyInput, addMoneyPass, document.getElementById('bankAccountSelect').value);
+    } else {
+        alert('Invalid PIN');
     }
 });
 
@@ -100,24 +65,15 @@ const cashOutBtn = document.getElementById('fastcashoutBtn')
 enableOnInput(cashOutInput, cashOutPass, cashOutBtn);
 
 cashOutBtn.addEventListener('click', (event)=> {
-    if (!cashOutForm.checkValidity()) {
-        return;
-    }
+    if (!cashOutForm.checkValidity()) return;
     event.preventDefault();
-    
     const number = cashOutNumber.value;
-    const enteredPin = cashOutPass.value;
-    if (!checkPin(enteredPin)) {
-        alert('Incorrect Pin');
+    const amount = parseInt(cashOutInput.value);
+    const pin = cashOutPass.value;
+    if (checkPin(pin)) {
+        amount> mainBalance ? insufficientMsg.classList.remove('hidden') : showConfirmation('Cash Out', number, amount, cashOutInput, cashOutPass);
     } else {
-        amount = parseInt(cashOutInput.value);
-        if (isNaN(amount)) {
-        console.log("Please enter a valid amount.");
-        } else if (cashOutPass==='') {
-        console.log("Please enter the right password.");
-        } else {
-        showConfirmation('Cash Out', number, amount, cashOutInput, cashOutPass)    
-        }
+        alert('Invalid PIN');
     }
  }); 
 
@@ -130,24 +86,15 @@ const sendMoneyBtn = document.getElementById('fastsendmoneyBtn')
 enableOnInput(sendMoneyInput, sendMoneyPass, sendMoneyBtn);
 
 sendMoneyBtn.addEventListener('click', (event)=> {
-    if (!sendMoneyForm.checkValidity()) {
-        return;
-    }
+    if (!sendMoneyForm.checkValidity()) return;
     event.preventDefault();
-
     const number = sendMoneyNumber.value;
-    const enteredPin = sendMoneyPass.value;
-    if (!checkPin(enteredPin)) {
-        alert('Incorrect Pin');
+    const amount = parseInt(sendMoneyInput.value);
+    const pin = sendMoneyPass.value;
+    if (checkPin(pin)) {
+        amount> mainBalance ? insufficientMsg.classList.remove('hidden') : showConfirmation('Send Money', number, amount, sendMoneyInput, sendMoneyPass);
     } else {
-            amount =parseInt(sendMoneyInput.value)
-        if (isNaN(amount)) {
-        console.log("Please enter a valid amount.");
-        } else if (sendMoneyPass==='') {
-        console.log("Please enter the right password.");
-        } else {
-        showConfirmation('Send Money', number, amount, sendMoneyInput, sendMoneyPass)
-        }
+        alert('Invalid PIN');
     }  
 })
 
@@ -160,24 +107,15 @@ const payBillBtn = document.getElementById('fastpaybillBtn')
 enableOnInput(payBillInput, payBillPass, payBillBtn);
 
 payBillBtn.addEventListener('click', (event)=> {
-    if (!payBillForm.checkValidity()) {
-        return;
-    }
+    if (!payBillForm.checkValidity()) return;
     event.preventDefault();
-
     const number = payBillNumber.value;
-    const enteredPin = payBillPass.value;
-    if (!checkPin(enteredPin)) {
-        alert('Incorrect Pin');
+    const amount = parseInt(payBillInput.value);
+    const pin = payBillPass.value;
+    if (checkPin(pin)) {
+        amount> mainBalance ? insufficientMsg.classList.remove('hidden') : showConfirmation('Pay Bill', number, amount, payBillInput, payBillPass);
     } else {
-            amount=parseInt(payBillInput.value)
-        if (isNaN(amount)) {
-        console.log("Please enter a valid amount.")
-        } else if (payBillPass==='') {
-        console.log("Please enter the right password.")
-        } else {
-        showConfirmation('Pay Bill', number, amount, payBillInput, payBillPass)
-        }
+        alert('Invalid PIN');
     }
 })
 
@@ -207,52 +145,38 @@ function showConfirmation(action, number, amount, inputElement, passElement, sel
 yesCon.addEventListener('click', yesFun)
 // Use yesFun (without ()) to pass the function itself to be called on click, not immediately
 const insufficientMsg = document.getElementById('insufficientMsg');
-function yesFun() {
+async function yesFun() {
     const { action, number, amount, bank} = transactionData;
     // const requiredBalance = transactionData.amount;
 
-    if ((action!=='Add Money') && (mainBalance < amount)) {
-        insufficientMsg.classList.remove('hidden');
-    } else { 
-        //updateBalance(amount, action === 'Add Money' ? 'add' : 'subtract');
-        if (action==='Add Money') {
-        updateBalance(amount, 'add');
-        bankAccounts[bank].balance -= amount;
-        localStorage.setItem('bankAccounts', JSON.stringify(bankAccounts)); //Updating & saving Bank balance after transaction
-        } else if (action==='Cash Out') {
-        updateBalance(amount, 'subtract');
-        } else if (action==='Send Money') {
-        updateBalance(amount, 'subtract');
-        } else if (action==='Pay Bill') {
-        updateBalance(amount, 'subtract');
+    try {
+        const response = await fetch(`http://localhost:5000/api/transaction`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({action, number, amount, bank}),
+        });
+        if (!response.ok) throw new Error('Transaction failed');
+        const result = await response.json();
+
+        // Update balance
+        if (result.success) {
+            updateBalance(amount, action==='Add Money' ? 'add' : 'subtract');
+            fetchTransactionHistory();
+            popupFun()
         }
 
-        transactionHistory.push({
-            type: action,
-            to : number || 'N/A',
-            amount,
-            bank: bank || 'N/A',
-            date: new Date().toLocaleString()  // creates a new Date object with the current date and time
-        });
-        //use of locale is to control how dates, times, and numbers are formatted
-        //const number = 1234567.89; console.log(number.toLocaleString()); Output might be: "1,234,567.89" (in the US locale)
-        //....
-        //const date = new Date();
-        //console.log(date.toLocaleString('en-US')); // US English format
-        //---'en-US': "11/23/2024, 4:35:29 PM"
-        //console.log(date.toLocaleString('de-DE')); // German format
-        //---'de-DE': "23.11.2024, 16:35:29"
-        renderTransactionHistory();
-        popupFun();
+        alert(result.message);
+    } catch (error) {
+        console.error(error);
+        alert('Transaction Failed');
+    } finally {
+        transactionData.inputElement.value='';
+        transactionData.passElement.value='';
+        conMessage.classList.add('hidden');
     }
 
-    
-
-    balance.innerText=`$${mainBalance}`;
-    transactionData.inputElement.value='';
-    transactionData.passElement.value='';
-    conMessage.classList.add('hidden');
-    document.getElementById(`fast${transactionData.action.toLowerCase().replace(/\s+/g,'')}Btn`).disabled=true;//.replace(/\s+/g, '') --- '/' marks start and end of pattern, '\s+' matches one or more spaces, 'g' for global (all) [g flag removes all occurrences], '' replaces with nothing thus removes all spaces 
+    document.getElementById(`fast${transactionData.action.toLowerCase().replace(/\s+/g,'')}Btn`).disabled=true;
+    //.replace(/\s+/g, '') --- '/' marks start and end of pattern, '\s+' matches one or more spaces, 'g' for global (all) [g flag removes all occurrences], '' replaces with nothing thus removes all spaces 
 }
 //okInsufficient'
 document.getElementById('okInsufficient').addEventListener('click', ()=> {
@@ -288,6 +212,11 @@ function moneyOptions(selectedOption) {
     sections.forEach(section => {
         const sectionElement = document.getElementById(section);
 
+        if (!sectionElement) {
+            console.error(`Section with ID '${section}' not found.`);
+            return;
+        }
+
         if (section === selectedOption) {
             sectionElement.classList.remove('hidden');  
         } else {
@@ -315,55 +244,52 @@ document.getElementById('closeModal').addEventListener('click',()=> {
     popUp.classList.add('hidden');
 })
 
-//Transaction History
-const transactionHistory = [];//global array
+// Fetch and Render Transaction History
+async function fetchTransactionHistory() {
+    try {
+        const response = await fetch('http://localhost:5000/api/transactions');
+        if (!response.ok) throw new Error("Error fetching transaction history");
+        const transactions = await response.json();
+        renderTransactionHistory(transactions);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 
 let showAllTransactions = false;
 const viewAllButton = document.getElementById('viewAllTransactions');
 
-function renderTransactionHistory() {
+function renderTransactionHistory(transactions) {
     const historyContainer = document.getElementById('transaction-history');
     historyContainer.innerHTML=''; // Clear existing content
 
-    transactionHistory.sort((a,b) => new Date(b.date) - new Date(a.date)); 
-    //The .sort() method takes a comparison function as an argument: (a, b)
-    // a and b are two transactions being compared.
-    //new Date(b.date) converts the date string of transaction b into a JavaScript Date object-- [In JavaScript, a Date object can be implicitly converted to a number which has an internal timestamp representing this point in time as a numeric value in milliseconds.]
-    //new Date(b.date) and new Date(a.date) are each converted to their respective timestamps in milliseconds. The subtraction new Date(b.date) - new Date(a.date) gives a positive or negative value:If the result is positive, b is newer than a, so b comes first in the sorted order.If the result is negative, a is newer than b, so a comes first
-    //.....
-    //const date1 = new Date('2024-01-01T12:00:00');
-    //const date2 = new Date('2024-01-02T12:00:00');
-    // Subtracting two Date objects
-    //const difference = date2 - date1; // result in milliseconds
-    //console.log(difference); // Output: 86400000 (milliseconds in 1 day)
-
-
+    transactions.sort((a,b) => new Date(b.date) - new Date(a.date)); 
+    //The subtraction new Date(b.date) - new Date(a.date) gives a positive or negative value:If the result is positive, b is newer than a, so b comes first in the sorted order.If the result is negative, a is newer than b, so a comes first
 
     // Determine how many transactions to show
-    const transactionsToShow = showAllTransactions ? transactionHistory : transactionHistory.slice(0,3);
-    //When showAllTransactions is true:The ternary operator '?' selects the entire transactionHistory array, so all transactions will be displayed.
-    //When showAllTransactions is false:The ternary operator : selects 'transactionHistory.slice(0, 3)' where .slice(0, 3) creates a new array with only the first three transactions from transactionHistory
+    const transactionsToShow = showAllTransactions ? transactions : transactions.slice(0,3);
 
     transactionsToShow.forEach((transaction) => {
         const historyItem = document.createElement('div');
-        historyItem.classList.add('w-11/12', 'mx-auto', 'mt-3', 'bg-white', 'rounded-xl', 'px-3', 'py-2', 'shadow-sm',
+        historyItem.classList.add('transaction-item','w-11/12', 'mx-auto', 'mt-3', 'bg-white', 'rounded-xl', 'px-3', 'py-2', 'shadow-sm',
         'hover:bg-gray-50', 'hover:border-none', 'hover:cursor-pointer', 'transition', 'duration-200', 'ease-in-out')
 
-        let toField = transaction.to ? `<p>To : ${transaction.to}</p>` : '';
+        let toField = transaction.number ? `<p>To : ${transaction.number}</p>` : '';
         let bankField = transaction.bank ? `<p>From : ${transaction.bank}</p>` : '';
 
         historyItem.innerHTML = `
                 <div class="flex justify-between items-center">
                     <div class="flex  items-center">
                         <div class="bg-slate-100 p-2 rounded-full">
-                        <img class="w-4"  src="Icons/${transaction.type.replace(" ","")}.svg" alt=""> 
+                        <img class="w-4"  src="Icons/${transaction.action.replace(" ","")}.svg" alt=""> 
                         </div>
                         
                         <div class="flex flex-col justify-between text-xs text-left ml-2">
-                            <p>${transaction.type}</p>
-                            ${transaction.type !== 'Add Money' ? toField : ''}
+                            <p>${transaction.action}</p>
+                            ${transaction.action !== 'Add Money' ? toField : ''}
                             <p>Amount : $${transaction.amount}</p>
-                            ${transaction.type == 'Add Money' ? bankField : ''}
+                            ${transaction.action == 'Add Money' ? bankField : ''}
                             <p>${transaction.date}</p>
                         </div>
                     </div>
@@ -376,11 +302,14 @@ function renderTransactionHistory() {
             historyContainer.appendChild(historyItem);
     });
 
-    viewAllButton.textContent = showAllTransactions ? 'Show Less' : 'View All';//We want to show 'Show less' while the page wil show all transactions by changing the buttons text content
+    viewAllButton.textContent = showAllTransactions ? 'Show Less' : 'View All';
 };
-
 // Add event listener to the "View All" button to toggle the view
 viewAllButton.addEventListener('click', ()=> {
     showAllTransactions = !showAllTransactions;
-    renderTransactionHistory(); // Re-render the transaction history
-})
+    fetchTransactionHistory(); // Re-render the transaction history
+}) 
+
+// Call initial functions
+fetchBalance();
+fetchTransactionHistory();
